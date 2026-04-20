@@ -1,0 +1,225 @@
+/* הגדרות כלליות */
+.rooms-container {
+  padding: 20px;
+  font-family: sans-serif;
+  direction: rtl;
+}
+.rooms-page {
+  padding: 40px 20px;
+  direction: rtl;
+  max-width: 1200px;
+  margin: 0 auto; /* ממקם את כל הקונטיינר במרכז המסך */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ממרכז את הכותרת והבקרה */
+}
+
+.page-header {
+  font-size: 3rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* תופס את מלוא רוחב הקונטיינר */
+  max-width: 1000px; /* מגביל רוחב כדי שלא יתפזר מדי */
+  background: #fdfdfd;
+  padding: 20px 30px;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+  margin-bottom: 40px;
+}
+
+/* מרכוז הגריד של הכרטיסיות */
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 1100px; /* שומר על הכרטיסיות מרוכזות במרכז */
+  justify-content: center; /* ממרכז את הכרטיסיות בתוך הגריד עצמו */
+  margin: 0 auto;
+}
+
+/* מרכוז הטבלה במידה והיא מוצגת */
+.table-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.solid-table {
+  width: 100%;
+  margin: 0 auto;
+}
+/* כותרת ואזור שליטה */
+.rooms-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.search-input {
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  width: 200px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.search-input:focus {
+  border-color: #32cd32;
+}
+
+/* החלפת תצוגה */
+.view-toggle button {
+  padding: 8px 15px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  background: white;
+  transition: 0.3s;
+}
+
+.view-toggle button.active {
+  background: #333;
+  color: white;
+  border-color: #333;
+}
+
+/* Grid של הכרטיסיות עם אנימציית כניסה */
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+  padding: 20px 0;
+  animation: fadeIn 0.8s ease-in;
+}
+
+.room-card-modern {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: 0.3s;
+  border-top: 10px solid; /* הצבע נקבע ע"י מחלקות ה-border */
+}
+
+.room-card-modern:hover {
+  transform: translateY(-8px);
+}
+
+.card-emoji {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+.room-title {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.btn-edit-modern {
+  margin-top: 20px;
+  background: #333;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-edit-modern:hover {
+  background: #ff0080;
+}
+
+/* צבעי המסגרות (Solid) */
+.border-pink {
+  border-color: #ff0080;
+}
+.border-orange {
+  border-color: #ff8c00;
+}
+.border-yellow {
+  border-color: #ffd700;
+}
+.border-green {
+  border-color: #32cd32;
+}
+
+/* עיצוב הטבלה */
+.rooms-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.rooms-table th,
+.rooms-table td {
+  padding: 12px;
+  border: 1px solid #eee;
+  text-align: right;
+}
+
+.rooms-table th {
+  background: #f8f9fa;
+}
+
+/* אנימציות טעינה (Loader) */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #ff0080;
+  border-right: 6px solid #ff8c00;
+  border-bottom: 6px solid #ffd700;
+  border-left: 6px solid #32cd32;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+/* הגדרת האנימציות */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
