@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const roomSchema = new mongoose.Schema({
   name: String,
   capacity: Number,
-  isAvailable: Boolean
+  isAvailable: Boolean,
 });
 
-const Rooms = mongoose.model('Rooms', roomSchema);
+const Rooms = mongoose.model("Rooms", roomSchema, "Rooms");
 module.exports = Rooms;
