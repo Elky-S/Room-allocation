@@ -1,0 +1,56 @@
+/* Nav.css */
+.navbar {
+  background: #ffffff; /* רקע לבן נקי כדי שהצבעים יבלטו */
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  direction: rtl;
+  border-bottom: 4px solid #f0f0f0;
+}
+
+.nav-logo {
+  color: #333;
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+
+.nav-links {
+  display: flex;
+  gap: 10px;
+}
+
+.link {
+  text-decoration: none;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 12px;
+  transition: transform 0.2s;
+  color: white;
+}
+
+/* צבע נפרד לכל קישור */
+.link:nth-child(1) {
+  background-color: #ff0080;
+} /* ורוד */
+.link:nth-child(2) {
+  background-color: #ff8c00;
+} /* כתום */
+.link:nth-child(3) {
+  background-color: #ffd700;
+  color: #333;
+} /* צהוב */
+.link:nth-child(4) {
+  background-color: #32cd32;
+} /* ירוק */
+
+.link:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.1);
+}
+
+.link.active {
+  outline: 3px solid #333;
+  outline-offset: 2px;
+}
