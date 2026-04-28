@@ -16,4 +16,7 @@ router
   .patch(roomController.updateRoom)  
   .delete(roomController.deleteRoom); 
 
+  // דוגמה להוספה ב-server/Routes/roomRoutes.js
+router.get('/search', roomController.searchAvailableRooms);
+
 module.exports = router;
