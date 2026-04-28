@@ -50,7 +50,6 @@ const roomSchema = new mongoose.Schema({ // הגדרת מבנה הנתונים (
   timestamps: true // מוסיף אוטומטית שדות זמן יצירה (createdAt) וזמן עדכון (updatedAt)
 });
 
-const Room = mongoose.model("Room", roomSchema, "Rooms"); // יצירת המודל מתוך הסכמה כדי שנוכל לבצע פעולות ב-DB
+const Room = mongoose.model('Room', roomSchema); // יצירת המודל מתוך הסכמה כדי שנוכל לבצע פעולות ב-DB
 module.exports = Room; // ייצוא המודל כדי שיהיה זמין לשימוש ב-Controller ובנתיבים (Routes)
-
 
