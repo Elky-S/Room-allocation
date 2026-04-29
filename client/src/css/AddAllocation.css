@@ -171,3 +171,89 @@
 .bg-green {
   background-color: #32cd32;
 }
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
+  justify-content: center;
+}
+
+.btn-edit,
+.btn-delete {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  color: white;
+}
+
+.btn-edit {
+  background-color: #ffd700; /* צהוב */
+  color: #333;
+}
+
+.btn-delete {
+  background-color: #ff0000; /* אדום למחיקה */
+}
+
+.btn-edit:hover,
+.btn-delete:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.1);
+} /* מרכז את הכפתורים בתחתית הכרטיס השמאלי */
+.admin-actions-row {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  justify-content: center;
+}
+
+.manage-btn-small {
+  padding: 8px 25px;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 0.9rem;
+}
+
+.bg-yellow {
+  background-color: #ffd700;
+  color: #333;
+}
+.bg-red {
+  background-color: #ff4d4d;
+}
+
+.manage-btn-small:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* מוודא שהמידע מסודר יפה */
+.info-grid {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-label {
+  font-weight: 700;
+  color: #555;
+}
+.info-value {
+  font-weight: 800;
+  color: #222;
+}

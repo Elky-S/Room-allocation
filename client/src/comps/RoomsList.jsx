@@ -1,130 +1,142 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "../css/Rooms.css"; // ניצור קובץ עיצוב בהמשך
+import Swal from "sweetalert2";
+import "../css/Rooms.css";
 
-export const RoomsList = () => {
+export const RoomsManagement = () => {
   const [rooms, setRooms] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState(""); // פותר את אזהרה 7:22
-  const [viewMode, setViewMode] = useState("cards"); // פותר את אזהרה 8:20
+
+  const API_URL = "http://localhost:3000/api/rooms";
+
+  const fetchRooms = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(API_URL);
+      const roomsData = res.data.data?.rooms || res.data;
+      if (Array.isArray(roomsData)) setRooms(roomsData);
+    } catch (err) {
+      console.error("שגיאה בטעינה:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const timer = new Promise((resolve) => setTimeout(resolve, 1000));
-      try {
-        const [response] = await Promise.all([
-          axios.get("http://localhost:3000/all-rooms"),
-          timer,
-        ]);
-        setRooms(response.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
+    fetchRooms();
   }, []);
 
-  // סינון חדרים לפי שורת החיפוש
+  // סינון חדרים לפי חיפוש
   const filteredRooms = rooms.filter((room) =>
-    (room.roomNumber || room.name || "")
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase()),
+    (room.roomNumber || "").toString().includes(searchTerm),
   );
+
+  const handleUpdate = async (room) => {
+    const { value: formValues } = await Swal.fire({
+      title: `עריכת תשתית חדר ${room.roomNumber}`,
+      html: `
+        <div style="text-align: right; direction: rtl;">
+          <label style="font-weight: 600;">קיבולת חדר:</label>
+          <input id="swal-cap" class="swal2-input" type="number" value="${room.capacity}">
+          
+          <label style="font-weight: 600; margin-top: 15px; display: block;">קומה (נעול):</label>
+          <input class="swal2-input" type="text" value="${room.floor || "1"}" disabled style="background: #f0f0f0;">
+          
+          <div style="margin-top: 20px; display: flex; align-items: center; gap: 10px;">
+            <input id="swal-proj" type="checkbox" ${room.hasProjector ? "checked" : ""} style="width: 20px; height: 20px;">
+            <label style="font-weight: 600;">מקרן תקין</label>
+          </div>
+        </div>
+      `,
+      confirmButtonText: "עדכן נתונים",
+      confirmButtonColor: "#4CAF50",
+      showCancelButton: true,
+      cancelButtonText: "ביטול",
+      preConfirm: () => ({
+        capacity: document.getElementById("swal-cap").value,
+        hasProjector: document.getElementById("swal-proj").checked,
+      }),
+    });
+
+    if (formValues) {
+      try {
+        await axios.patch(`${API_URL}/${room._id}`, formValues);
+        Swal.fire({
+          icon: "success",
+          title: "הנתונים עודכנו",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        fetchRooms();
+      } catch (err) {
+        Swal.fire("שגיאה", "העדכון נכשל", "error");
+      }
+    }
+  };
 
   if (loading)
     return (
       <div className="loader-container">
         <div className="spinner"></div>
-        <p>טוען נתונים מהמסד...</p>
       </div>
     );
 
   return (
-    <div className="rooms-page">
-      <h1 className="page-header text-green">ניהול חדרים</h1>
-
-      {/* אזור הבקרה - פותר את האזהרות על ידי שימוש בפונקציות */}
-      <div className="controls-bar">
-        <input
-          type="text"
-          placeholder="חפשי חדר..."
-          className="search-input"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-
-        <div className="view-buttons">
-          <button
-            className={`view-btn ${viewMode === "cards" ? "active" : ""}`}
-            onClick={() => setViewMode("cards")}
-          >
-            🎴 כרטיסיות
-          </button>
-          <button
-            className={`view-btn ${viewMode === "table" ? "active" : ""}`}
-            onClick={() => setViewMode("table")}
-          >
-            📊 טבלה
-          </button>
+    <div className="management-container fade-in">
+      <header className="mgmt-header">
+        <h1 className="mgmt-title">ניהול תשתיות מוסדי</h1>
+        <div className="search-wrapper">
+          <i className="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            placeholder="חפשי מספר חדר..."
+            className="search-input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
-      </div>
+      </header>
 
-      {viewMode === "cards" ? (
-        <div className="rooms-grid">
-          {filteredRooms.map((room, index) => {
-            const colors = [
-              "border-pink",
-              "border-orange",
-              "border-yellow",
-              "border-green",
-            ];
-            const cardColor = colors[index % colors.length];
-            return (
-              <div key={room._id} className={`room-card-modern ${cardColor}`}>
-                <div className="card-emoji">🏛️</div>
-                <h3>חדר {room.roomNumber || room.name}</h3>
-                <div className="card-details">
-                  <p>
-                    👥 קיבולת: <strong>{room.capacity}</strong>
-                  </p>
-                  <p>
-                    📍 קומה: <strong>{room.floor || "1"}</strong>
-                  </p>
-                </div>
-                <button className="btn-manage">נהל חדר</button>
+      <div className="rooms-modern-grid">
+        {filteredRooms.length > 0 ? (
+          filteredRooms.map((room) => (
+            <div key={room._id} className="modern-card">
+              <div className="card-accent"></div>
+              <div className="card-header">
+                <span className="room-label">חדר</span>
+                <h2 className="room-num">{room.roomNumber}</h2>
               </div>
-            );
-          })}
-        </div>
-      ) : (
-        <div className="table-wrapper">
-          <table className="modern-table">
-            <thead>
-              <tr>
-                <th>מספר חדר</th>
-                <th>קיבולת</th>
-                <th>קומה</th>
-                <th>פעולות</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredRooms.map((room) => (
-                <tr key={room._id}>
-                  <td>{room.roomNumber || room.name}</td>
-                  <td>{room.capacity}</td>
-                  <td>{room.floor || "1"}</td>
-                  <td>
-                    <button className="small-btn">ערוך</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              <div className="card-body">
+                <div className="data-row">
+                  <span className="label">👥 קיבולת</span>
+                  <span className="val">{room.capacity}</span>
+                </div>
+                <div className="data-row">
+                  <span className="label">📍 קומה</span>
+                  <span className="val">{room.floor || "1"}</span>
+                </div>
+                <div className="data-row">
+                  <span className="label">📽️ מקרן</span>
+                  <span
+                    className={`status-tag ${room.hasProjector ? "tag-green" : "tag-red"}`}
+                  >
+                    {room.hasProjector ? "מותקן" : "חסר"}
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => handleUpdate(room)}
+                className="edit-glow-btn"
+              >
+                ערוך תשתית
+              </button>
+            </div>
+          ))
+        ) : (
+          <p className="no-results">לא נמצאו חדרים התואמים את החיפוש...</p>
+        )}
+      </div>
     </div>
   );
 };
