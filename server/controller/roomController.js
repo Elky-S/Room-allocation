@@ -1,17 +1,17 @@
-const Room = require('../models/Rooms'); // וודאי שהנתיב למודל שיצרת נכון
+const Room = require("../models/Rooms"); // וודאי שהנתיב למודל שיצרת נכון
 
 // 1. יצירת חדר חדש (Create)
 exports.createRoom = async (req, res) => {
   try {
     const newRoom = await Room.create(req.body);
     res.status(201).json({
-      status: 'success',
-      data: { room: newRoom }
+      status: "success",
+      data: { room: newRoom },
     });
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message
+      status: "fail",
+      message: err.message,
     });
   }
 };
@@ -21,14 +21,14 @@ exports.getAllRooms = async (req, res) => {
   try {
     const rooms = await Room.find();
     res.status(200).json({
-      status: 'success',
+      status: "success",
       results: rooms.length,
-      data: { rooms }
+      data: { rooms },
     });
   } catch (err) {
     res.status(404).json({
-      status: 'fail',
-      message: err.message
+      status: "fail",
+      message: err.message,
     });
   }
 };
@@ -37,21 +37,21 @@ exports.getAllRooms = async (req, res) => {
 exports.getRoom = async (req, res) => {
   try {
     const room = await Room.findById(req.params.id)
-      .populate('placements')    // מציג את נתוני השיבוצים במקום רק ID
-      .populate('cancellations'); // מציג את נתוני הביטולים
+      .populate("placements") // מציג את נתוני השיבוצים במקום רק ID
+      .populate("cancellations"); // מציג את נתוני הביטולים
 
     if (!room) {
-      return res.status(404).json({ status: 'fail', message: 'חדר לא נמצא' });
+      return res.status(404).json({ status: "fail", message: "חדר לא נמצא" });
     }
 
     res.status(200).json({
-      status: 'success',
-      data: { room }
+      status: "success",
+      data: { room },
     });
   } catch (err) {
     res.status(404).json({
-      status: 'fail',
-      message: err.message
+      status: "fail",
+      message: err.message,
     });
   }
 };
@@ -60,22 +60,22 @@ exports.getRoom = async (req, res) => {
 exports.updateRoom = async (req, res) => {
   try {
     const room = await Room.findByIdAndUpdate(req.params.id, req.body, {
-      new: true, // מחזיר את האובייקט המעודכן
-      runValidators: true // מפעיל את הולידציות שהגדרת בסכמה גם בעדכון
+      returnDocument: "after", //  מחזיר את האובייקט המעודכן(כתוב בגרסה מתקדמת)
+      runValidators: true, // מפעיל את הולידציות שהגדרת בסכמה גם בעדכון
     });
 
     if (!room) {
-      return res.status(404).json({ status: 'fail', message: 'חדר לא נמצא' });
+      return res.status(404).json({ status: "fail", message: "חדר לא נמצא" });
     }
 
     res.status(200).json({
-      status: 'success',
-      data: { room }
+      status: "success",
+      data: { room },
     });
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message
+      status: "fail",
+      message: err.message,
     });
   }
 };
@@ -86,17 +86,17 @@ exports.deleteRoom = async (req, res) => {
     const room = await Room.findByIdAndDelete(req.params.id);
 
     if (!room) {
-      return res.status(404).json({ status: 'fail', message: 'חדר לא נמצא' });
+      return res.status(404).json({ status: "fail", message: "חדר לא נמצא" });
     }
 
     res.status(204).json({
-      status: 'success',
-      data: null // במחיקה מקובל לא להחזיר תוכן
+      status: "success",
+      data: null, // במחיקה מקובל לא להחזיר תוכן
     });
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
-      message: err.message
+      status: "fail",
+      message: err.message,
     });
   }
 };
